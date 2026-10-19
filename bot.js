@@ -14,7 +14,7 @@ const {
   Routes,
 } = require('discord.js');
 
-const TOKEN = 'MTU2MTc2NjYzNzY5MzA0Mjc5OA.G7kbTs.tvU5a5IQ1dGxr0CEfqPMcRVK43QJ1f9C-zFsEA';
+const TOKEN = process.env.TOKEN;
 const CLIENT_ID = '1561766637693042798';
 const GUILD_ID = '1546430975628542013'; // guild commands appear instantly
 

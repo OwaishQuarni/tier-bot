@@ -14,9 +14,9 @@ const {
   Routes,
 } = require('discord.js');
 
-const TOKEN = 'YOUR_BOT_TOKEN';
-const CLIENT_ID = 'YOUR_APPLICATION_ID';
-const GUILD_ID = 'YOUR_SERVER_ID'; // guild commands appear instantly
+const TOKEN = 'MTU2MTc2NjYzNzY5MzA0Mjc5OA.G7kbTs.tvU5a5IQ1dGxr0CEfqPMcRVK43QJ1f9C-zFsEA';
+const CLIENT_ID = '1561766637693042798';
+const GUILD_ID = '1546430975628542013'; // guild commands appear instantly
 
 // Optional: maps tier_color text to the embed's side-bar color
 const COLOR_MAP = {

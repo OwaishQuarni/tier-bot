@@ -44,7 +44,6 @@ const command = new SlashCommandBuilder()
   .addStringOption(o => o.setName('score').setDescription('Score, e.g. 3-1').setRequired(true))
   .addStringOption(o => o.setName('sword_rank').setDescription('Sword rank').setRequired(true))
   .addStringOption(o => o.setName('new_tier').setDescription('New tier, e.g. HT3').setRequired(true))
-  .addStringOption(o => o.setName('tier_color').setDescription('Tier color, e.g. gold').setRequired(true));
 
 function buildTemplate(v) {
   return [
@@ -61,7 +60,7 @@ function buildTemplate(v) {
     `Overall Match Winner: ${v.tester}`,
     `${v.player} New tier achievement in ${v.gamemode}: ${v.new_tier}`,
     '',
-    `${v.player} Thanks for tier testing in ${v.tier_color} tier hope you enjoyed`,
+    `${v.player} Thanks for tier testing in White Tier hope you enjoyed`,
   ].join('\n');
 }
 

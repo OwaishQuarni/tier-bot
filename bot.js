@@ -70,7 +70,10 @@ client.on('interactionCreate', async interaction => {
     .setThumbnail(`https://mc-heads.net/avatar/${encodeURIComponent(v.player)}/100`)
     .setColor(0x5865f2);
 
-  await interaction.reply({ embeds: [embed] });
+  await interaction.reply({
+    content: '@everyone @here',
+    embeds: [embed],
+  });
 });
 
 client.login(TOKEN);

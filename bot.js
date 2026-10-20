@@ -1,9 +1,4 @@
 // Tier Test Result Bot (discord.js v14)
-// Setup:
-//   1) npm init -y
-//   2) npm install discord.js
-//   3) Fill in TOKEN, CLIENT_ID, GUILD_ID below
-//   4) node bot.js
 
 const {
   Client,
@@ -13,6 +8,7 @@ const {
   REST,
   Routes,
 } = require('discord.js');
+const http = require('http');
 
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = '1561766637693042798';
@@ -44,6 +40,7 @@ const command = new SlashCommandBuilder()
   .addStringOption(o => o.setName('score').setDescription('Score, e.g. 3-1').setRequired(true))
   .addStringOption(o => o.setName('sword_rank').setDescription('Sword rank').setRequired(true))
   .addStringOption(o => o.setName('new_tier').setDescription('New tier, e.g. HT3').setRequired(true))
+  .addStringOption(o => o.setName('tier_color').setDescription('Tier color (optional)').setRequired(false));
 
 function buildTemplate(v) {
   return [
@@ -66,12 +63,16 @@ function buildTemplate(v) {
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.once('ready', async () => {
-  const rest = new REST({ version: '10' }).setToken(TOKEN);
-  await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-    body: [command.toJSON()],
-  });
-  console.log(`Logged in as ${client.user.tag} - /tiertest registered`);
+client.once('clientReady', async () => {
+  try {
+    const rest = new REST({ version: '10' }).setToken(TOKEN);
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+      body: [command.toJSON()],
+    });
+    console.log(`Logged in as ${client.user.tag} - /tiertest registered`);
+  } catch (error) {
+    console.error('Error registering commands:', error);
+  }
 });
 
 client.on('interactionCreate', async interaction => {
@@ -85,17 +86,21 @@ client.on('interactionCreate', async interaction => {
     v[key] = interaction.options.getString(key);
   }
 
+  // Safe color checking (prevents crash if tier_color is missing)
+  const colorKey = v.tier_color ? v.tier_color.toLowerCase() : 'white';
+  const embedColor = COLOR_MAP[colorKey] ?? 0x5865f2;
+
   const embed = new EmbedBuilder()
     .setDescription(buildTemplate(v))
     .setThumbnail(`https://mc-heads.net/avatar/${encodeURIComponent(v.player)}/100`)
-    .setColor(COLOR_MAP[v.tier_color.toLowerCase()] ?? 0x5865f2);
+    .setColor(embedColor);
 
   await interaction.reply({ embeds: [embed] });
 });
 
 client.login(TOKEN);
-const http = require('http');
 
+// HTTP Server for Render Port Binding
 http.createServer((req, res) => {
   res.write("Bot is running online!");
   res.end();

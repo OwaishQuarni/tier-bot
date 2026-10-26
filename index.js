@@ -32,7 +32,7 @@ for (const feature of features) {
 }
 
 // ---- Register slash commands ----
-client.once('clientReady', async () => {
+client.once(Events.ClientReady, async () => {
   try {
     const rest = new REST({ version: '10' }).setToken(TOKEN);
     await rest.put(Routes.applicationGuildCommands(config.CLIENT_ID, config.GUILD_ID), {

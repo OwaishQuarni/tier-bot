@@ -53,7 +53,7 @@ client.on('interactionCreate', async interaction => {
     await cmd.execute(interaction);
   } catch (error) {
     console.error('Command error:', error.code || error.message);
-    // Interaction expired - there is nothing left to reply to
+    // Interaction expired - nothing left to reply to
     if (error.code === 10062 || error.code === 40060) return;
     try {
       const msg = { content: 'Something went wrong.', flags: 64 };
@@ -64,27 +64,16 @@ client.on('interactionCreate', async interaction => {
     }
   }
 });
-  if (!interaction.isChatInputCommand()) return;
-  const cmd = commandMap.get(interaction.commandName);
-  if (!cmd) return;
-  try {
-    await cmd.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    const msg = { content: 'Something went wrong.', ephemeral: true };
-    if (interaction.replied || interaction.deferred) await interaction.followUp(msg);
-    else await interaction.reply(msg);
-  }
-});
 
+// ---- Logging + never crash ----
 client.on('error', e => console.error('CLIENT ERROR:', e));
-client.on('warn', w => console.warn('WARN:', w));
-client.on('shardDisconnect', (e) => console.log('DISCONNECTED, code:', e.code));
-client.on('shardReconnecting', () => console.log('Reconnecting...'));
-client.login(TOKEN)
+client.on('shardDisconnect', e => console.log('DISCONNECTED, code:', e.code));
+process.on('unhandledRejection', err => console.error('Unhandled:', err));
+
+client
+  .login(TOKEN)
   .then(() => console.log('login() ok'))
   .catch(e => console.error('LOGIN FAILED:', e));
-process.on('unhandledRejection', err => console.error('Unhandled:', err));
 
 // HTTP server for Render port binding / uptime pings
 http

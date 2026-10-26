@@ -4,5 +4,5 @@ module.exports = {
   GUILD_ID: '1546430975628542013',
 
   // Right-click the welcome channel in Discord (Developer Mode on) -> Copy Channel ID
-  WELCOME_CHANNEL_ID: 'PUT_WELCOME_CHANNEL_ID_HERE',
+  WELCOME_CHANNEL_ID: '1564267115039686699',
 };

@@ -59,7 +59,14 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.login(TOKEN);
+client.on('error', e => console.error('CLIENT ERROR:', e));
+client.on('warn', w => console.warn('WARN:', w));
+client.on('shardDisconnect', (e) => console.log('DISCONNECTED, code:', e.code));
+client.on('shardReconnecting', () => console.log('Reconnecting...'));
+client.login(TOKEN)
+  .then(() => console.log('login() ok'))
+  .catch(e => console.error('LOGIN FAILED:', e));
+process.on('unhandledRejection', err => console.error('Unhandled:', err));
 
 // HTTP server for Render port binding / uptime pings
 http

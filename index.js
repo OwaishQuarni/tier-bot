@@ -52,6 +52,24 @@ client.on('interactionCreate', async interaction => {
   try {
     await cmd.execute(interaction);
   } catch (error) {
+    console.error('Command error:', error.code || error.message);
+    // Interaction expired - there is nothing left to reply to
+    if (error.code === 10062 || error.code === 40060) return;
+    try {
+      const msg = { content: 'Something went wrong.', flags: 64 };
+      if (interaction.replied || interaction.deferred) await interaction.followUp(msg);
+      else await interaction.reply(msg);
+    } catch (e) {
+      console.error('Could not send error reply:', e.code || e.message);
+    }
+  }
+});
+  if (!interaction.isChatInputCommand()) return;
+  const cmd = commandMap.get(interaction.commandName);
+  if (!cmd) return;
+  try {
+    await cmd.execute(interaction);
+  } catch (error) {
     console.error(error);
     const msg = { content: 'Something went wrong.', ephemeral: true };
     if (interaction.replied || interaction.deferred) await interaction.followUp(msg);

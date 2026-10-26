@@ -1,7 +1,7 @@
 // White Tier all-in-one bot (discord.js v14)
 // index.js only starts the bot and loads every file inside /features.
 
-const { Client, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, REST, Routes, Events } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
